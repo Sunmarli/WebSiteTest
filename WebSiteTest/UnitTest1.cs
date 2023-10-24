@@ -19,7 +19,7 @@ namespace WebSiteTest
         [SetUp]
         public void start_browser()
         {
-            driver = new FirefoxDriver(@"C:\Users\Administrator\Documents\GitHub\WebSiteTest\WebSiteTest\drivers");
+            driver = new FirefoxDriver();
             driver.Manage().Window.Maximize();
 
 
@@ -29,14 +29,11 @@ namespace WebSiteTest
         public void test_page1()
         {
             driver.Url = test_url;
-           
+
             driver.Navigate().GoToUrl("https://maria-juliajarv22.thkit.ee/Forms/kysemustik.html");
 
-            Thread.Sleep(5500);
 
 
-            var reset = driver.FindElement(By.XPath("//input[@type='reset']"));
-            reset.Click();
             driver.SwitchTo().DefaultContent();
 
 
@@ -85,7 +82,8 @@ namespace WebSiteTest
                 var sSelect = driver.FindElements(By.XPath("//select"));
                 for (int i = 0; i < sSelect.Count; i++)
                 {
-                    try { sSelect[i].Click(); sSelect[i].FindElements(By.XPath(".//*"))[2].Click(); } catch (Exception) { Console.WriteLine("Error,unable to choose select option"); }
+                    try { sSelect[i].Click(); sSelect[i].FindElements(By.XPath(".//*"))[2].Click(); }
+                    catch (Exception) { Console.WriteLine("Error,unable to choose select option"); }
                 }
 
                 Thread.Sleep(2500);
@@ -106,18 +104,23 @@ namespace WebSiteTest
                         Assert.Fail($"Error: Unable to fill in date input field - {ex.Message}");
                     }
 
-
-
-                    Thread.Sleep(2500);
-                    var reg = driver.FindElement(By.XPath("//input[@type='button']"));
-                    try { reg.Click(); } catch (Exception) { Console.WriteLine("Error, button is functional"); }
-
-                    Thread.Sleep(6000);
-                    driver.SwitchTo().DefaultContent();
-
                 }
+
+                Thread.Sleep(2500);
+                var reg = driver.FindElement(By.XPath("//input[@type='button']"));
+                try { reg.Click(); } catch (Exception) { Console.WriteLine("Error, button is functional"); }
+
+
+                Thread.Sleep(2500);
+                var reset = driver.FindElement(By.XPath("//input[@type='reset']"));
+                reset.Click();
+               
+                Thread.Sleep(6000);
+                driver.SwitchTo().DefaultContent();
             }
         }
+         
+                    
         [TearDown]
         public void close_Browser()
         {
@@ -125,3 +128,4 @@ namespace WebSiteTest
         }
     }
 }
+
